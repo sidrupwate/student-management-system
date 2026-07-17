@@ -130,8 +130,7 @@ function Dashboard() {
                 <div className="col-6 col-lg-3">
                     <div className="card border-0 shadow-sm h-100">
                         <div className="card-body d-flex align-items-center gap-3">
-                            <div className="rounded-3 d-flex align-items-center justify-content-center text-white"
-                                style={{ width: 48, height: 48, backgroundColor: '#000080' }}>
+                            <div className="rounded-3 stat-icon stat-icon--sidebar">
                                 <FiUsers size={22} />
                             </div>
                             <div>
@@ -144,8 +143,7 @@ function Dashboard() {
                 <div className="col-6 col-lg-3">
                     <div className="card border-0 shadow-sm h-100">
                         <div className="card-body d-flex align-items-center gap-3">
-                            <div className="rounded-3 d-flex align-items-center justify-content-center text-white"
-                                style={{ width: 48, height: 48, backgroundColor: '#198754' }}>
+                            <div className="rounded-3 stat-icon stat-icon--success">
                                 <FiBook size={22} />
                             </div>
                             <div>
@@ -158,8 +156,7 @@ function Dashboard() {
                 <div className="col-6 col-lg-3">
                     <div className="card border-0 shadow-sm h-100">
                         <div className="card-body d-flex align-items-center gap-3">
-                            <div className="rounded-3 d-flex align-items-center justify-content-center text-white"
-                                style={{ width: 48, height: 48, backgroundColor: '#0d6efd' }}>
+                            <div className="rounded-3 stat-icon stat-icon--accent">
                                 <FiCalendar size={22} />
                             </div>
                             <div>
@@ -172,8 +169,7 @@ function Dashboard() {
                 <div className="col-6 col-lg-3">
                     <div className="card border-0 shadow-sm h-100">
                         <div className="card-body d-flex align-items-center gap-3">
-                            <div className="rounded-3 d-flex align-items-center justify-content-center text-white"
-                                style={{ width: 48, height: 48, backgroundColor: activeFiltersCount > 0 ? '#dc3545' : '#6c757d' }}>
+                            <div className={`rounded-3 stat-icon ${activeFiltersCount > 0 ? 'stat-icon--danger' : 'stat-icon--neutral'}`}>
                                 <FiFilter size={22} />
                             </div>
                             <div>
@@ -323,13 +319,11 @@ function Dashboard() {
                                                     <img
                                                         src={getPhotoSrc(student.photo_url)}
                                                         alt={student.name}
-                                                        className="rounded-circle"
-                                                        style={{ width: 40, height: 40, objectFit: 'cover' }}
+                                                        className="student-avatar"
                                                         onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
                                                     />
                                                 ) : (
-                                                    <div className="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
-                                                        style={{ width: 40, height: 40, backgroundColor: '#000080', fontSize: '0.9rem' }}>
+                                                    <div className="student-avatar-fallback">
                                                         {student.name.charAt(0).toUpperCase()}
                                                     </div>
                                                 )}
@@ -345,16 +339,15 @@ function Dashboard() {
 
                                         {/* Admission Number Badge */}
                                         <td>
-                                            <span className="badge bg-warning bg-opacity-10 text-warning border border-warning fw-semibold"
-                                                style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                                            <span className="admission-chip">
                                                 {student.admission_number}
                                             </span>
                                         </td>
 
                                         <td>{student.course}</td>
-                                        <td><span className="badge bg-primary bg-opacity-10 text-primary">Year {student.year}</span></td>
+                                        <td><span className="badge bg-accent-soft text-accent">Year {student.year}</span></td>
                                         <td>{student.mobile_number}</td>
-                                        <td><span className="badge bg-secondary bg-opacity-10 text-secondary">{student.gender}</span></td>
+                                        <td><span className="badge bg-neutral-soft text-neutral">{student.gender}</span></td>
 
                                         {/* Actions */}
                                         <td className="text-end">
@@ -416,7 +409,7 @@ function Dashboard() {
             {/* ── Delete Confirmation Modal (Bootstrap) ── */}
             {studentToDelete && (
                 <>
-                    <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal fade show d-block modal-overlay" tabIndex="-1">
                         <div className="modal-dialog modal-dialog-centered">
                             <div className="modal-content border-0 shadow">
                                 <div className="modal-header border-0 pb-0">

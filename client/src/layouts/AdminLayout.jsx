@@ -17,17 +17,37 @@ function getPageTitle(pathname) {
 }
 
 function AdminLayout() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const location = useLocation();
 
+    const handleToggleCollapse = () => {
+        setIsSidebarCollapsed((prev) => !prev);
+    };
+
+    const handleMobileMenuClick = () => {
+        setIsMobileSidebarOpen((prev) => !prev);
+    };
+
+    const handleSidebarClose = () => {
+        setIsMobileSidebarOpen(false);
+    };
+
     return (
-        <div className="admin-layout">
-            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+        <div
+            className={`admin-layout ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}
+        >
+            <Sidebar
+                isCollapsed={isSidebarCollapsed}
+                isMobileOpen={isMobileSidebarOpen}
+                onToggleCollapse={handleToggleCollapse}
+                onClose={handleSidebarClose}
+            />
 
             <div className="admin-layout-main">
                 <Navbar
                     title={getPageTitle(location.pathname)}
-                    onMenuClick={() => setIsSidebarOpen((prev) => !prev)}
+                    onMenuClick={handleMobileMenuClick}
                 />
                 <main className="admin-layout-content">
                     <Outlet />

@@ -1,80 +1,74 @@
 import { NavLink } from 'react-router-dom';
-import { FiGrid, FiUserPlus } from 'react-icons/fi';
+import { FiGrid, FiUserPlus, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import './Sidebar.css';
 
 const NAV_ITEMS = [
     { to: '/', label: 'Dashboard', icon: FiGrid, end: true },
     { to: '/students/add', label: 'Add Student', icon: FiUserPlus },
 ];
 
-function Sidebar({ isOpen, onClose }) {
+function Sidebar({ isCollapsed, isMobileOpen, onToggleCollapse, onClose }) {
     return (
         <>
-            {/* Backdrop overlay on mobile */}
-            {isOpen && (
+            {isMobileOpen && (
                 <div
-                    className="position-fixed top-0 start-0 w-100 h-100"
-                    style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1040 }}
+                    className="sidebar-backdrop"
                     onClick={onClose}
                     aria-hidden="true"
                 />
             )}
 
             <aside
-                className="d-flex flex-column position-fixed top-0 start-0 h-100 text-white shadow"
-                style={{
-                    width: 250,
-                    backgroundColor: '#000080',
-                    zIndex: 1050,
-                    transition: 'transform 0.25s ease',
-                    transform: isOpen ? 'translateX(0)' : undefined,
-                }}
+                className={[
+                    'sidebar',
+                    isCollapsed && 'sidebar-collapsed',
+                    isMobileOpen && 'sidebar-open',
+                ]
+                    .filter(Boolean)
+                    .join(' ')}
             >
-                {/* Brand */}
-                <div className="d-flex align-items-center gap-3 px-3 py-4 border-bottom border-light border-opacity-10">
-                    <div
-                        className="rounded-2 d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
-                        style={{ width: 40, height: 40, backgroundColor: '#0d6efd', fontSize: '0.875rem' }}
+                <div className="sidebar-header">
+                    <div className="sidebar-brand">
+                        <div className="sidebar-brand-mark">SM</div>
+                        <div className="sidebar-brand-text">
+                            <div className="sidebar-brand-name">StudentMS</div>
+                            <small className="sidebar-brand-sub">Admin Panel</small>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        className="sidebar-toggle-btn"
+                        onClick={onToggleCollapse}
+                        aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                     >
-                        SM
-                    </div>
-                    <div>
-                        <div className="fw-bold lh-sm">StudentMS</div>
-                        <small className="text-white-50">Admin Panel</small>
-                    </div>
+                        {isCollapsed ? <FiChevronRight size={18} /> : <FiChevronLeft size={18} />}
+                    </button>
                 </div>
 
-                {/* Navigation links */}
-                <nav className="d-flex flex-column gap-1 p-3 flex-grow-1">
+                <nav className="sidebar-nav">
                     {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
                         <NavLink
                             key={to}
                             to={to}
                             end={end}
+                            title={isCollapsed ? label : undefined}
                             onClick={onClose}
                             className={({ isActive }) =>
-                                `d-flex align-items-center gap-3 px-3 py-2 rounded-2 text-decoration-none ${
-                                    isActive
-                                        ? 'text-white fw-semibold'
-                                        : 'text-white-50'
-                                }`
+                                `sidebar-link ${isActive ? 'sidebar-link-active' : ''}`
                             }
-                            style={({ isActive }) => ({
-                                backgroundColor: isActive ? 'rgba(255,255,255,0.12)' : 'transparent',
-                                borderLeft: isActive ? '3px solid #0d6efd' : '3px solid transparent',
-                                transition: 'background-color 0.15s ease',
-                                fontSize: '0.9375rem',
-                            })}
                         >
-                            <Icon size={18} />
-                            <span>{label}</span>
+                            <Icon size={18} className="sidebar-link-icon" />
+                            <span className="sidebar-link-label">{label}</span>
                         </NavLink>
                     ))}
                 </nav>
 
-                {/* Footer */}
-                <div className="px-3 py-3 border-top border-light border-opacity-10">
-                    <small className="text-white-50 d-block">Student Management System</small>
-                    <small className="text-white-50 opacity-50">v1.0.0</small>
+                <div className="sidebar-footer">
+                    <div className="sidebar-footer-text">
+                        <small>Student Management System</small>
+                        <small className="sidebar-footer-version">v1.0.0</small>
+                    </div>
                 </div>
             </aside>
         </>

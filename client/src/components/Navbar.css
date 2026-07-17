@@ -1,8 +1,9 @@
 .navbar {
     height: var(--navbar-height);
-    background-color: navy;
-    color: #ffffff;
-    border-bottom: 1px solid var(--color-border);
+    width: 100%;
+    background-color: var(--color-navbar-bg);
+    color: var(--color-sidebar-text-active);
+    border-bottom: 1px solid var(--color-navbar-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -10,36 +11,48 @@
     position: sticky;
     top: 0;
     z-index: 20;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .navbar-left {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+    min-width: 0;
 }
 
 .navbar-menu-btn {
     display: none;
     background: none;
     border: none;
-    color: var(--color-text-primary);
+    color: var(--color-sidebar-text-active);
     padding: var(--space-2);
     border-radius: var(--radius-sm);
+    cursor: pointer;
+    flex-shrink: 0;
 }
 
 .navbar-menu-btn:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-sidebar-hover);
 }
 
 .navbar-title {
+    font-family: var(--font-display);
     font-size: 1.125rem;
     font-weight: 700;
+    color: var(--color-sidebar-text-active);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .navbar-right {
     display: flex;
     align-items: center;
     gap: var(--space-4);
+    flex-shrink: 0;
 }
 
 .navbar-user {
@@ -52,8 +65,8 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: var(--color-accent-soft);
-    color: var(--color-accent);
+    background-color: var(--color-sidebar-control-bg);
+    color: var(--color-sidebar-text-active);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,15 +84,19 @@
 .navbar-user-name {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--color-text-primary);
+    color: var(--color-sidebar-text-active);
 }
 
 .navbar-user-role {
     font-size: 0.75rem;
-    color: var(--color-text-muted);
+    color: var(--color-on-dark-muted);
 }
 
 @media (max-width: 900px) {
+    .navbar {
+        padding: 0 var(--space-4);
+    }
+
     .navbar-menu-btn {
         display: inline-flex;
         align-items: center;
