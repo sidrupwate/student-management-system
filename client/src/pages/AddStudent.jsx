@@ -16,6 +16,12 @@ import {
 import studentService from '../services/studentService';
 import './AddStudent.css';
 
+// Must match server/middleware/upload.js exactly - the backend
+// rejects anything outside this set (notably: no GIF), so the
+// frontend needs to agree or a user can upload something that
+// looks accepted here and then fails after the request round trip.
+const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
 function AddStudent() {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
@@ -53,14 +59,16 @@ function AddStudent() {
     const handlePhotoChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            // Size limit: 5MB
+            // Size limit: 5MB - matches server/middleware/upload.js
             if (file.size > 5 * 1024 * 1024) {
                 toast.error('Photo size must be smaller than 5MB');
                 return;
             }
-            // File type limit
-            if (!file.type.startsWith('image/')) {
-                toast.error('Only image files (JPG, PNG, GIF) are allowed');
+            // File type limit - matches server/middleware/upload.js
+            // exactly (jpg/jpeg/png/webp only, NOT gif or other
+            // image/* types the browser might otherwise accept).
+            if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
+                toast.error('Only JPG, PNG, and WEBP images are allowed');
                 return;
             }
             setPhotoFile(file);
@@ -156,7 +164,7 @@ function AddStudent() {
                             type="file"
                             ref={fileInputRef}
                             onChange={handlePhotoChange}
-                            accept="image/*"
+                            accept="image/jpeg,image/jpg,image/png,image/webp"
                             style={{ display: 'none' }}
                         />
 
@@ -172,7 +180,7 @@ function AddStudent() {
                         )}
 
                         <p className="photo-upload-info" style={{ marginTop: '12px' }}>
-                            Accepts JPG, PNG, GIF.<br />
+                            Accepts JPG, PNG, WEBP.<br />
                             Max size: 5MB
                         </p>
                     </div>
